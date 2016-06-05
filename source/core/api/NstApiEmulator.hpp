@@ -103,6 +103,8 @@ namespace Nes
 			{
 				return machine;
 			}
+
+			Nes::byte* getRam() const;	
 		};
 	}
 }

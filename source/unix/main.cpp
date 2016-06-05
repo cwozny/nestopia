@@ -920,8 +920,6 @@ void nst_load(const char *filename) {
 int main(int argc, char *argv[])
 {
 	// This is the main function
-	int frame = 0;
-	
 	static SDL_Event event;
 	void *userData = (void*)0xDEADC0DE;
 
@@ -1068,7 +1066,8 @@ int main(int argc, char *argv[])
 					emulator.Execute(cNstVideo, cNstSound, cNstPads);
 				}
 
-				printf("Frame #%d: Buttons = 0x%x\n", ++frame, cNstPads->pad[0].buttons);
+				printf("Frame #%d: Buttons = 0x%x\n", emulator.Frame(), cNstPads->pad[0].buttons);
+				Nes::byte* ram = emulator.getRam();
 			}
 		}
 	}
