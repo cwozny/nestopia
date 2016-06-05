@@ -917,8 +917,10 @@ void nst_load(const char *filename) {
 	nst_play();
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	// This is the main function
+	int frame = 0;
 	
 	static SDL_Event event;
 	void *userData = (void*)0xDEADC0DE;
@@ -1051,15 +1053,22 @@ int main(int argc, char *argv[]) {
 			
 			audio_play();
 			
-			if (updateok) {
+			if (updateok)
+			{
 				// Pulse the turbo buttons
 				input_pulse_turbo(cNstPads);
 				
 				// Execute a frame
-				if (timing_frameskip()) {
+				if (timing_frameskip())
+				{
 					emulator.Execute(NULL, cNstSound, cNstPads);
 				}
-				else { emulator.Execute(cNstVideo, cNstSound, cNstPads); }
+				else
+				{
+					emulator.Execute(cNstVideo, cNstSound, cNstPads);
+				}
+
+				printf("Frame #%d: Buttons = 0x%x\n", ++frame, cNstPads->pad[0].buttons);
 			}
 		}
 	}
