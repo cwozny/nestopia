@@ -1068,6 +1068,8 @@ int main(int argc, char *argv[])
 
 				printf("Frame #%d: Buttons = 0x%x\n", emulator.Frame(), cNstPads->pad[0].buttons);
 				Nes::byte* ram = emulator.getRam();
+
+				// TODO: Save all 2048 bytes of RAM to file and button inputs to file
 			}
 		}
 	}
