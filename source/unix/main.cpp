@@ -1018,8 +1018,9 @@ int main(int argc, char *argv[])
 	// Start the main loop
 	nst_quit = 0;
 	
-	ramFile.open("ram.bin");
-	buttonFile.open("button.bin");
+	ramFile.open("ram.txt");
+	buttonFile.open("button.txt");
+	buttonFile << "Frame,Right,Left,Down,Up,Start,Select,B,A" << std::endl;
 	
 	Nes::byte* ram = emulator.getRam();
 	
@@ -1063,13 +1064,46 @@ int main(int argc, char *argv[])
 			{
 				// Pulse the turbo buttons
 				input_pulse_turbo(cNstPads);
+
+				/*
+					A      = 0x01,
+					B      = 0x02,
+					SELECT = 0x04,
+					START  = 0x08,
+					UP     = 0x10,
+					DOWN   = 0x20,
+					LEFT   = 0x40,
+					RIGHT  = 0x80
+				*/
 				
-				std::cout << emulator.Frame() << "," << cNstPads->pad[0].buttons << " " << ram[0] << std::endl;
-				buttonFile << emulator.Frame() << "," << cNstPads->pad[0].buttons << std::endl;
-				
+				buttonFile << emulator.Frame() << ","
+					   << (float)((cNstPads->pad[0].buttons >> 7) & 1) << ","        // Right
+					   << (float)((cNstPads->pad[0].buttons >> 6) & 1) << ","        // Left
+					   << (float)((cNstPads->pad[0].buttons >> 5) & 1) << ","        // Down
+					   << (float)((cNstPads->pad[0].buttons >> 4) & 1) << ","        // Up
+					   << (float)((cNstPads->pad[0].buttons >> 3) & 1) << ","        // Start
+					   << (float)((cNstPads->pad[0].buttons >> 2) & 1) << ","        // Select
+					   << (float)((cNstPads->pad[0].buttons >> 1) & 1) << ","        // B
+					   << (float)((cNstPads->pad[0].buttons >> 0) & 1) << std::endl; // A
+			
+				ramFile << emulator.Frame() << ",";
+
+				for(int i = 0; i < 2048; ++i)
+				{
+					ramFile << (unsigned short)ram[i];
+					
+					if(i < 2047)
+					{
+						ramFile << ",";
+					}
+				}
+
+				ramFile << std::endl;
+	
 				// Execute a frame
 				if (timing_frameskip())
 				{
+					printf("Skipping frame\n");
 					emulator.Execute(NULL, cNstSound, cNstPads);
 				}
 				else
