@@ -10,3 +10,5 @@
 *.js
 *.bc
 .npmignore
+button.txt
+ram.txt
