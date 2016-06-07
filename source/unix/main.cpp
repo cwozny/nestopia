@@ -1064,9 +1064,8 @@ int main(int argc, char *argv[])
 				// Pulse the turbo buttons
 				input_pulse_turbo(cNstPads);
 				
-				
-				
 				std::cout << emulator.Frame() << "," << cNstPads->pad[0].buttons << " " << ram[0] << std::endl;
+				buttonFile << emulator.Frame() << "," << cNstPads->pad[0].buttons << std::endl;
 				
 				// Execute a frame
 				if (timing_frameskip())
