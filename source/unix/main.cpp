@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <ofstream>
 #include <sstream>
 #include <iomanip>
 #include <vector>
