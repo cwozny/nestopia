@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <ofstream>
 #include <sstream>
 #include <iomanip>
 #include <vector>
@@ -92,6 +93,9 @@ static std::ifstream *fdsbios;
 
 static std::ifstream *moviefile;
 static std::fstream *movierecfile;
+
+std::ofstream ramFile;
+std::ofstream buttonFile;
 
 extern settings_t conf;
 extern bool altspeed;
@@ -1015,6 +1019,11 @@ int main(int argc, char *argv[])
 	// Start the main loop
 	nst_quit = 0;
 	
+	ramFile.open("ram.bin");
+	buttonFile.open("button.bin");
+	
+	Nes::byte* ram = emulator.getRam();
+	
 	while (!nst_quit) {
 		#if defined(_APPLE) && defined(_GTK)
 		if (!playing) { gtk_main_iteration_do(TRUE); }
@@ -1056,6 +1065,10 @@ int main(int argc, char *argv[])
 				// Pulse the turbo buttons
 				input_pulse_turbo(cNstPads);
 				
+				
+				
+				std::cout << emulator.Frame() << "," << cNstPads->pad[0].buttons << " " << ram[0] << std::endl;
+				
 				// Execute a frame
 				if (timing_frameskip())
 				{
@@ -1065,14 +1078,12 @@ int main(int argc, char *argv[])
 				{
 					emulator.Execute(cNstVideo, cNstSound, cNstPads);
 				}
-
-				printf("Frame #%d: Buttons = 0x%x\n", emulator.Frame(), cNstPads->pad[0].buttons);
-				Nes::byte* ram = emulator.getRam();
-
-				// TODO: Save all 2048 bytes of RAM to file and button inputs to file
 			}
 		}
 	}
+	
+	ramFile.close();
+	buttonFile.close();
 	
 	// Remove the cartridge and shut down the NES
 	nst_unload();
