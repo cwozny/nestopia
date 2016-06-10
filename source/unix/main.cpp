@@ -1020,7 +1020,6 @@ int main(int argc, char *argv[])
 	
 	ramFile.open("ram.txt");
 	buttonFile.open("button.txt");
-	buttonFile << "Frame,Right,Left,Down,Up,Start,Select,B,A" << std::endl;
 	
 	Nes::byte* ram = emulator.getRam();
 	
@@ -1076,8 +1075,7 @@ int main(int argc, char *argv[])
 					RIGHT  = 0x80
 				*/
 				
-				buttonFile << emulator.Frame() << ","
-					   << (float)((cNstPads->pad[0].buttons >> 7) & 1) << ","        // Right
+				buttonFile << (float)((cNstPads->pad[0].buttons >> 7) & 1) << ","        // Right
 					   << (float)((cNstPads->pad[0].buttons >> 6) & 1) << ","        // Left
 					   << (float)((cNstPads->pad[0].buttons >> 5) & 1) << ","        // Down
 					   << (float)((cNstPads->pad[0].buttons >> 4) & 1) << ","        // Up
@@ -1085,8 +1083,6 @@ int main(int argc, char *argv[])
 					   << (float)((cNstPads->pad[0].buttons >> 2) & 1) << ","        // Select
 					   << (float)((cNstPads->pad[0].buttons >> 1) & 1) << ","        // B
 					   << (float)((cNstPads->pad[0].buttons >> 0) & 1) << std::endl; // A
-			
-				ramFile << emulator.Frame() << ",";
 
 				for(int i = 0; i < 2048; ++i)
 				{
