@@ -1082,7 +1082,7 @@ int main(int argc, char *argv[])
 					   << (float)((cNstPads->pad[0].buttons >> 3) & 1) << ","        // Start
 					   << (float)((cNstPads->pad[0].buttons >> 2) & 1) << ","        // Select
 					   << (float)((cNstPads->pad[0].buttons >> 1) & 1) << ","        // B
-					   << (float)((cNstPads->pad[0].buttons >> 0) & 1) << std::endl; // A
+					   << (float)((cNstPads->pad[0].buttons >> 0) & 1) << "\n"; // A
 
 				for(int i = 0; i < 2048; ++i)
 				{
@@ -1094,7 +1094,7 @@ int main(int argc, char *argv[])
 					}
 				}
 
-				ramFile << std::endl;
+				ramFile << "\n";
 	
 				// Execute a frame
 				if (timing_frameskip())
